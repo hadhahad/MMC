@@ -1,12 +1,7 @@
-marek.bukacek@fjfi.cvut.cz
+email: marek.bukacek@fjfi.cvut.cz
 
 Cviceni 3.10.:
 
 	- kod tyden pred obhajobou prikladu
 	- zapocet na konci prosince
 	- 18.10., 25.10., 20.12. - nebude cviveni
-
-Cviceni 9.10.:
-
-	-
-
