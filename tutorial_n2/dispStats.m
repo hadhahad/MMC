@@ -10,7 +10,8 @@ N = length(nahv);
 
 prum = mean(nahv);
 rozp = var(nahv);
-chybaPrum = rozp/sqrt(N*hlVyzn);
+odh = sqrt(rozp);
+chybaPrum = odh/sqrt(N*hlVyzn);
 
 if verbose
     disp(num2str(prum,'%0.4f'))

@@ -18,12 +18,19 @@ hladVyzn = 0.01;disp([text ':' num2str(cislo,'%0.1f') ' ' text])
 % Nyni chceme max chybu 0.001 
 
 p = 0.6;
-maxChyba = 0.001;
+aktChyba = inf;
 hlVyzn = 0.01;
+minPocet = 100;
+maxPocet = 1000000;
+krok = 0;
+realizace = [];
 
-hod = utBinom(1,p);
-[EX, sigma, err] = dispStats(hod);
-while err > maxChyba
-    hod = [hod, utBinom(1,p)];
-    [EX, sigma, err] = dispStats(hod);
+while kork < minPocet || (krok < maxPocet && aktChyba > maxChyba)
+    
+    x = utBinom(1,p);
+    realizace = [realizace; x];
+    [~,~,aktChyba] = dispStats(realizace, hladVyzn, false);
+    krok = krok + 1;
 end
+
+[a,b,aktChyba] = dispStats(realizace, hladVyzn, true);
