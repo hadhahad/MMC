@@ -1,0 +1,24 @@
+Lineární kongruenční generátory:
+
+N ~ U(0,1) <-> N ~ U{1,2,...,MAX_INT}   -> pseudonahodna posloupnost
+
+f - specialni generujici funkce: f(parametry, historie) = ...
+	x_{n+1} = f(x_{n}, x_{n-1}, a, b, ...)
+	x_{n+1} = a + b - mod(x_{n}, c)
+	
+	x_{0} = seminko (je nastaveno bud' staticky nebo pomoci casu procesoru)
+		x_{0} = now - today (milisekundy, matlabovsky cas)
+			(now - today)*24*60*60 (kolik dnes ubehlo sekund)
+		x_{0} = datetime ... (slozitejsi)
+
+Integrace:
+
+	- integrujeme na intervalu (a,b)
+	- I = \int_{a,b}f(x)dx
+		- dá se počítat pomocí vlastnosti integrálu (plocha pod grafem);
+			\sum{i=1,N} f_i * \delta X
+			I = \bar{x}*(b-a)
+		- \int{a,b} f(x) * g(x)/g(x) dx = \int{a,b} f(x)/g(x) d\mu_g(x) - integrace podle míry (g musí být "hezké");
+		-lze integrovat zamítací metodou (střílím do boxu a dívám se, jestli jsem pod funkcí);
+			I/B = Pr[pod funkcí] = #zásahů/#střel;
+	- naučíme se počítat integrály od -inf do +inf
