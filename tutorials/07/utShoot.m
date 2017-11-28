@@ -10,8 +10,8 @@ function Int = utShoot(N)
 if nargin < 1, N = 10000; end
 MIN = 0;
 MAX = 16;
-ry = utZaklSpoj(N,'CONST',[0,16]);
-rx = utZaklSpoj(N,'CONST',[-3,1]);
+ry = ctZaklSpoj(N,'CONST',[0,16]);
+rx = ctZaklSpoj(N,'CONST',[-3,1]);
 
 zasah = ry < rx.*rx - 2*rx + 1;   % tecka " .* " - nasobeni po prvcich
 
