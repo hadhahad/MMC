@@ -6,8 +6,8 @@ if nargin < 3, verbose = false; end
 
 N = length(rv);
 
-ex = mean(nahv);
-dx = var(nahv);
+ex = mean(rv);
+dx = var(rv);
 sigma = sqrt(dx);
 err = sigma/sqrt(N*signLvl);
 

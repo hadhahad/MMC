@@ -1,4 +1,4 @@
-function [ solution, solutionErrByPoint ] = parabolicPDESolver( numOfSim, b, meshStep, maxTimeLevel)
+function [ solution, solutionErr ] = parabolicPDESolver( numOfSim, b, meshStep, maxTimeLevel)
 % The following function solves parabolic PDE by the Monte Carlo method.
 % The solution is calculated on a square region [-b,b]x[-b,b].
 %
@@ -14,29 +14,37 @@ if nargin <= 3
     maxTimeLevel = 100; 
 end
 
-RHS_ic= @(x,y) 1; % initial condition right-hand side
-RHS_bc = @(x,y) 1;  % boundary condition right-hand side
+RHS_ic= @(x,y) 10*x*exp(-x^2-y^2)+273; % initial condition right-hand side
+RHS_bc = @(x,y) 273;  % boundary condition right-hand side
 
-mesh = boundary:meshStep:boundary; 
+mesh = -b:meshStep:b; 
 solution = nan(length(mesh), length(mesh));
-solutionErrByPoint = nan(length(mesh), length(mesh));
-W = nan(numOfSim);
+solutionErr = nan(length(mesh), length(mesh));
+W = nan(numOfSim,1);
 
-for iX = 2:(length(mesh)-1)
-    for iY = 2:(length(mesh)-1)
+% Calculation of the soluton in the internal region
+for iX = 1:(length(mesh)-1+1)
+    for iY = 1:(length(mesh)-1+1)
         for sim = 1:numOfSim
             [xPos, yPos] = meshRandomWalk(mesh(iX), mesh(iY), meshStep, b, maxTimeLevel);
-            if onBoundary(xPos, yPos, b)
+            if (abs(xPos) >= b) || (abs(yPos) >= b)
                 W(sim) = RHS_bc(xPos, yPos);
             else
                 W(sim) = RHS_ic(xPos, yPos);
             end
         end
-        [solution(iX, iY), ~, solutionErrByPoint(iX,iY)] = calcStats(W);
+        [s, ~, err] = calcStats(W);
+        solution(iX, iY) = s;
+        solutionErr(iX,iY) = err;
     end
+    disp(iX/(length(mesh)-1+1));
 end
 
-% TODO: calculate solution values onthe boundary
+% Calculation of the solution on the boundary
+% solution(1,:) = RHS_bc(b,b);
+% solution(length(mesh),:) = RHS_bc(b,b);
+% solution(:,1) = RHS_bc(b,b);
+% solution(:,length(mesh)) = RHS_bc(b,b);
 
 end
 

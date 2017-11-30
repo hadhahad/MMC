@@ -18,9 +18,8 @@ steps = [-meshStep meshStep];   % possible steps which have to be taken
 xPos = xStartPos;
 yPos = yStartPos;
 time = maxTimeLevel;
-onBoundary = false;
 
-while  not(onBoundary(xPos, yPos, b)) && (time > 0)
+while  (abs(xPos) < b) && (abs(yPos) < b) && (time > 0)
     xStep = steps(randi(2));
     yStep = steps(randi(2));
     xPos = xPos + xStep;
@@ -30,25 +29,5 @@ end
 
 xFinPos = xPos;
 yFinPos = yPos;
-
-end
-
-
-function X = onBoundary(xPos, yPos, b)
-% Checking if the point is located on 
-% the boundary of the square [-b,b]x[-b,b]
-%
-% INPUT:
-%   xPos .. current position on the x-axis
-%   yPos .. current position on the y-axis
-%   b .. interval boundary value
-% OUTPUT:
-%   X .. boolean value (true, if the point is located on the boundary)
-
-if (abs(xPos) < b) && (abs(yPos) < b)
-    X = true;
-else
-    X = false;
-end
 
 end

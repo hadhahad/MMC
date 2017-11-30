@@ -1,8 +1,3 @@
-
-P = [1 3 1 7];
-%X = multi(N, P);
-%histogram(X);
-
 % xAxis = -2:meshStep:2;
 % yAxis = xAxis;
 % [xAxis,yAxis] = meshgrid(xAxis);
@@ -40,14 +35,26 @@ clear;  % Erase all existing variables. Or clearvars if you want.
 workspace;  % Make sure the workspace panel is showing.
 format long g;
 format compact;
-
+numOfSims = 10000;
 meshStep = 1e-1;
-maxSteps = 1000;
+maxSteps = 50;
 boundary = 2;
 
+% for i = 1:10
+%     [a, b] = meshRandomWalk(0,0,meshStep,boundary,maxSteps);
+%     disp(a);
+%     disp(b);
+%     disp('--------------------');
+% end
 
-xPos = 0.0;
-yPos = 0.0;
-numOfSteps = 0;
+[sol, err] = parabolicPDESolver(numOfSims, boundary, meshStep, maxSteps);
+% disp(sol);
+x = -boundary:meshStep:boundary;
+[x,y] = meshgrid(x);
+mesh(y,x,sol);
+xlabel('x');
+ylabel('y');
+zlabel('u(x,y)');
+% mesh(x,y,x.*x.*x.*x-y.*y.*y.*y + 375);
 
 
