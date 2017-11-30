@@ -1,23 +1,24 @@
-function X = simPocasi(mat, pocStav, cilStav, casHor, pocCyklu)
-% vypocet pravdepodobnosti v markovskem procesu
-%
-% INPUT
-%   mat .. matice prechodu
-%   pocStav .. pocatecni stav
-%   cilStav .. cilovy stav
-%   casHor .. casovy horizont
-%   pocCyklu .. pocet cyklu
-% OUTPUT
-%   X .. pravdepodobnost, ze v casHor se dostaneme ze stavu pocStav do stavu cilStav
+function prstUsp = simPocasi(P)
 
-dim = size(mat);
-dim = dim(1);
+pocSym = 1000;
+pocatek = 4;
+cilenyStav = 2;
+casHor = 3;
 
-X = 
-stav = pocStav;
+pocUspechu = 0;
 
-for i = 1:
-    stav = Multinomial(1, mat(stav,:));
+for j = 1:pocSym
+    aktStav = pocatek;
+    for i = 1:casHor
+        aktStav = ctMultinom(1,P(aktStav,:));
+        if aktStav == cilenyStav
+            pocUspechu = pocUspechu+1;
+         %   disp(['uspech v kroku: ' num2str(j)])
+            break
+        end
+    end
 end
+
+prstUsp = pocUspechu/pocSym;
 
 end
