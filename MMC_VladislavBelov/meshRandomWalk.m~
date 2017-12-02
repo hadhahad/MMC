@@ -1,0 +1,32 @@
+function [xFinPos, yFinPos] = meshRandomWalk(xStartPos, yStartPos, meshStep, b, maxTime)
+% Function simulates a random walk on a mesh within a given boundary.
+%
+%
+% INPUT:
+%   xStartPos .. x-axis start value
+%   yStartPos .. y-axis start value
+%   meshStep .. step taken by a walk at a time
+%   b .. boundary value
+%   maxTime .. maximum number of steps
+% 
+% OUTPUT:
+%   xFinPos .. x-axis final position
+%   yFinPos .. y-axis final position
+
+steps = [-meshStep meshStep];   % a set of possible steps within a single axis
+xPos = xStartPos;   % starting position on the x-axis
+yPos = yStartPos;   % starting position on the y-axis
+time = maxTime; % starting time
+
+while  (abs(xPos) < b) && (abs(yPos) < b) && (time > 0)
+    xStep = steps(randi(2));    % rastep within the x-axis
+    yStep = steps(randi(2));    % random step within the y-axis
+    xPos = xPos + xStep;
+    yPos = yPos + yStep;
+    time = time - 1;
+end
+
+xFinPos = xPos;
+yFinPos = yPos;
+
+end
