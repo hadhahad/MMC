@@ -8,8 +8,8 @@ format compact;
 
 %%% Initial parameters %%%
 numOfSims = 100;
-meshStep = 1e-1;
-maxSteps = 50;
+meshStep = 1e-2;
+maxSteps = 250;
 boundary = 2;
 
 
@@ -35,7 +35,7 @@ x = -boundary:meshStep:boundary;
 figure;
 colormap parula;
 f = surf(y,x,sol);
-set(f, 'LineWidth', meshStep);
+set(f, 'LineWidth', 'none');
 xlabel('x');
 ylabel('y');
 zlabel('u(x,y)');
@@ -46,7 +46,7 @@ solutionPlotName(10) = '2';
 figure;
 colormap parula;
 f = pcolor(y,x,sol);
-set(f, 'LineWidth', meshStep);
+set(f, 'LineWidth', 'mone');
 xlabel('x');
 ylabel('y');
 colorbar;
@@ -56,7 +56,7 @@ saveas(gcf, strcat(path,solutionPlotName));
 figure;
 colormap copper;
 f = pcolor(y,x,err);
-set(f, 'LineWidth', meshStep);
+set(f, 'LineWidth', 'none');
 xlabel('x');
 ylabel('y');
 colorbar;
