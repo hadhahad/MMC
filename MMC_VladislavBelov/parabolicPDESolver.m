@@ -16,7 +16,7 @@ function [solution, solutionErr] = parabolicPDESolver(...
 
 if nargin <= 3, maxTime = 25; end
 if nargin <= 4, verbose = false; end
-if verbose, disp('Simulation progrss: 0 %'); end
+if verbose, disp('Simulation progress: 0.00 %'); end
 if maxTime == 0, return; end
 
 RHS_ic= @(x,y) 10*x*exp(-x^2-y^2)+273; % initial condition right-hand side
