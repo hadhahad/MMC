@@ -254,18 +254,24 @@ Tato funkce odpovídá za výpočet statistických vlastností náhodné veliči
 
 \section{Simulace a výsledky}
 
-\begin{enumerate}[(I)]
-	\item 	řešení úlohy hledáme pro jednu konkrétní počáteční podmínku:
-		\begin{equation*}
-			w(x)=10x\cdot\exp(-x^2-y^2)+273
-		\end{equation*}
-	\item 	a konkrétní okrajovou podmínku:
-		\begin{equation*}
-			g(x) = 273.
-		\end{equation*}
-\end{enumerate}
+Pro demonstraci funkčnosti algoritmu uvedeného v sekci \ref{sec:3} a jeho implementace popsané v sekci \ref{sec:4} okrajová a počáteční podmínky úlohy \eqref{ini_problem} byly zvoleny v následujícím tvaru\footnote{Kdyby byla potřeba, v implementačním souboru lze tyto podmínky snadno měnit.}: 
 
+\begin{equation}\label{eq:boundary_condition}
+	u\arrowvert_{\partial\Gamma}=g(x)=273;
+\end{equation}
 
+\begin{equation}\label{eq:initial_condition}
+	u(0,x)=h(x)=10x\cdot\exp(-x^2-y^2)+273.
+\end{equation}
+
+Počáteční podmínka \eqref{eq:initial_condition} popisuje rozložení teploty na čtverci $\midpoint{\Gamma}$ v čase $t=0$; toto rozložení je znázorněno na Obr.~\ref{fig:initial_condition}. Čekali bychom, že by časem pozorovaný systém měl prostřednictvím šíření tepla dosáhnout nějaké střední teploty na celém čtverci $\midpoint{\Gamma}$. 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{../results/initial_condition_plot/initial_condition}
+\caption{Grafické znázornění počáteční podmínky \eqref{eq:initial_condition}.}
+\label{fig:initial_condition}
+\end{figure}
 
 
 \newpage{}

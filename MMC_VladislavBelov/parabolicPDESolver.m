@@ -8,7 +8,7 @@ function [solution, solutionErr] = parabolicPDESolver(...
 %   numOfSim .. number of simulations for Monte Carlo method
 %   b .. boundary - determines the [-b,b]x[-b,b] region
 %   meshStep .. mesh step parameter
-%   maxTimeLevel .. maximum number of steps
+%   maxTime .. maximum number of steps
 %
 % OUTPUT:
 %   solution .. solution storage
