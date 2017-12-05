@@ -1,6 +1,6 @@
 \documentclass[11pt,american,czech]{article}
 \usepackage[a4paper]{geometry}
-\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2cm,rmargin=2cm,headheight=0.8cm,headsep=1cm,footskip=0.5cm}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=0.8cm,headsep=1cm,footskip=0.5cm}
 \setcounter{secnumdepth}{3}
 \usepackage{url}
 \usepackage{amsmath}
@@ -12,10 +12,16 @@
 \usepackage{threeparttable}
 \usepackage{algorithmic}
 \usepackage{algorithm}
+\usepackage{subfigure}
 \usepackage{array}
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 \usepackage{mathpazo} % Palatino font
+
+\usepackage{array}
+
+
+\pagenumbering{arabic}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Algorithms
@@ -54,7 +60,7 @@
 %\renewcommand{\cite}{\citep}
 
 \makeatother
-\pagestyle{empty} %turns off page numbering
+%\pagestyle{empty} %turns off page numbering
 \usepackage{babel}
 \newcommand*\Laplace{\mathop{}\!\mathbin\bigtriangleup}
 \newcommand*\midpoint[1]{\overline{#1}}
@@ -114,10 +120,12 @@
 	
 \end{titlepage}
 
+%\tableofcontents
+%\newpage{}
 
 \section{Úvod}\label{sec:1}
 
-Znalosti způsobů řešení různých diferenciálních rovnic je podstatná pro každého, kdo je aspoň nějak spojen s vědou a technikou. Tato seminární práce se zabývá řešením parabolické diferenciální rovnice popisující vedení tepla ve dvou dimenzích pomocí metody Monte Carlo.
+Existuje hodně způsobů řešení diferenciálních rovnic. Tato seminární práce se zabývá hledáním aproximace řešení parabolické evoluční úlohy popisující vedení tepla (resp. difuzi)\footnote{Záleží na tom, jakou fyzikální interpretaci parabolické evoluční úlohy zvolíme.} ve dvou dimenzích pomocí metody Monte Carlo.
 
 \medskip
 
@@ -135,7 +143,7 @@ V dané notaci funkce $u=u(t,x)$ popisuje rozložení teploty na oblasti $\Gamma
 
 \section{Diskretizace úlohy}\label{sec:2}
 
-V numerické matematice se podobné úlohy řeší pomocí metody konečných diferencí (metody sítí), která spočívá v diskretizaci oblasti $(0,T)\times\Gamma$ a konstrukci diferenčního schématu (viz \cite{BENES2017}). Pro jednoduchost budeme hledat řešení úlohy \eqref{ini_problem} na čtverci $\Gamma=(-b,b)\times(-b,b)$, $b>0$, pak lze definovat na uzavřeném čtverci $\midpoint{\Gamma}$ čtvercovou síť $\midpoint{\omega}_{h}$ s krokem $h>0$, tj. $\Gamma\leftrightarrow\omega_{h}$ a $\partial\Gamma\leftrightarrow\midpoint{\omega}_{h}\setminus\omega_{h}$. Potom, rozdělíme-li interval $[0,T]$ na časové hladiny s krokem $\tau=\tfrac{T}{N_{T}}$, kde $N_{T}$ je počet hladin, a označíme-li $u^{\,k}_{i,j}$ hodnoty funkce $u$ na časových hladinách $k\in\{0,1,\dots,N_{T}\}$ pro všechny $(i,j)$ body sítě $\midpoint{\omega}_{h}$, dostaneme podle \cite{BENES2017} následující diferenční schéma:
+V numerické matematice se podobné úlohy řeší pomocí metody konečných diferencí (metody sítí), která spočívá v diskretizaci oblasti $(0,T)\times\Gamma$ a konstrukci diferenčního schématu (viz \cite{BENES2017}). Pro jednoduchost budeme hledat řešení úlohy \eqref{ini_problem} na čtverci $\Gamma=(-b,b)\times(-b,b)$, $b>0$, pak na jeho uzávěru $\midpoint{\Gamma}$ lze definovat čtvercovou síť $\midpoint{\omega}_{h}$ s krokem $h>0$, tj. $\Gamma\leftrightarrow\omega_{h}$ a $\partial\Gamma\leftrightarrow\midpoint{\omega}_{h}\setminus\omega_{h}$. Potom, rozdělíme-li interval $[0,T]$ na časové hladiny s krokem $\tau=\tfrac{T}{N_{T}}$, kde $N_{T}$ je počet hladin, a označíme-li $u^{\,k}_{i,j}$ hodnoty funkce $u$ na časových hladinách $k\in\{0,1,\dots,N_{T}\}$ pro všechny $(i,j)$ body sítě $\midpoint{\omega}_{h}$, dostaneme podle \cite{BENES2017} následující diferenční schéma:
 
 \begin{equation} \label{fin_diff_scheme}
 	\begin{split}
@@ -149,13 +157,13 @@ Takovému-to diferenčnímu schématu se říká \textit{explicitní} a jeho chy
 
 \begin{equation}\label{final_fin_diff_scheme}
 	\begin{split}
-		u^{\,k}_{i,j}=\frac{1}{4}\big(u^{\,k-1}_{i+1,\,j}+u^{\,k-1}_{i-1,\,j}&+u^{\,k-1}_{i,\,j+1}+u^{\,k-1}_{i,\,j-1}\big),\,\forall(i,j)\in\omega_{h},\,\forall k\in\{0,1,\dots,N_{T}-1\};\\
+		u^{\,k+1}_{i,j}=\frac{1}{4}\big(u^{\,k}_{i+1,\,j}+u^{\,k}_{i-1,\,j}&+u^{\,k}_{i,\,j+1}+u^{\,k}_{i,\,j-1}\big),\,\forall(i,j)\in\omega_{h},\,\forall k\in\{0,1,\dots,N_{T}-1\};\\
 		u^{k}_{i,j}&=g_{i,j},\forall(i,j)\in\midpoint{\omega}_{h}\setminus\omega_{h},\,\forall k\in\{0,1,\dots,N_{T}\};\\
 		u^{\,0}_{i,j}&=h_{i,j},\,\forall(i,j)\in\midpoint{\omega}_{h}.
 	\end{split}
 \end{equation}
 
-Stojí za zmínění, že schéma \eqref{final_fin_diff_scheme} je stabilní, neboť podmínka stability pro \eqref{fin_diff_scheme} má tvar: 
+Stojí za zmínění, že schéma \eqref{final_fin_diff_scheme} je stabilní, neboť obecná podmínka stability pro \eqref{fin_diff_scheme} má tvar: 
 
 \begin{equation*}
 	\frac{1}{2}\geq D\cdot\frac{\tau}{h^{2}}.
@@ -167,10 +175,12 @@ Získanou soustavu lineárních algebraických rovnic budeme řešit pomocí met
 
 Postup pro řešení soustavy rovnic \eqref{final_fin_diff_scheme} získané diskretizací úlohy \eqref{ini_problem} je velmi jednoduchý - použijeme lehce upravenou náhodnou procházku. Aproximaci $u^{\,k_{0}}_{ij}$ pro jistou pevnou časovou hladinu $k_{0}\in\{0,1,\dots,N_{T}\}$ dostaneme jako výběrovou střední hodnotu jisté náhodné veličiny $Y_{W_{ini}}$ definované následujícím způsobem (\cite{VIRIUS2010}):
 
+\newpage{}
+
 \begin{enumerate}
 	\item označíme počáteční bod náhodné procházky $W_{ini}=(i,j)\in\omega_{h}$, který se nachází na časové hladině $k_{0}$;
 	\item z bodu $W_{ini}$ přejde náhodná procházka s pravděpodobností $\frac{1}{4}$ do libovolného sousedního bodu, který je na časové hladině $k_{0}-1$;
-	\item pokud je náhodná procházka stále ve vnitřním bodě sítě $\midpoint{\omega}_{h}$ a není na nulové časové hladině, vrátíme se na krok 2, jinak jdeme na krok 4;
+	\item pokud je náhodná procházka stále ve vnitřním bodě sítě $\midpoint{\omega}_{h}$ (tj. není na hranici $\midpoint{\omega}_{h}\setminus\omega_{h}$) a není na nulové časové hladině, vrátíme se na krok 2, jinak jdeme na krok 4;
 	\item označíme-li $W_{fin}$ bod sítě, ve kterém se nachází náhodná procházka v daném okamžiku, pak definujeme náhodnou veličinu $Y_{W_{ini}}$ takto:
 	\begin{itemize}
 		\item $Y_{W_{ini}}=h(W_{fin})$, pokud $W_{fin}\in\omega_{h}$, ale $W_{fin}\notin\midpoint{\omega}_{h}$;
@@ -180,9 +190,11 @@ Postup pro řešení soustavy rovnic \eqref{final_fin_diff_scheme} získané dis
 
 Zopakujeme-li tento postup pro všechny body $(i,j)\in\omega_{h}$, dostaneme aproximaci\footnote{Ve zdroji \cite{VIRIUS2010} lze nalézt důkaz toho, že střední hodnoty $Y_{W}$ pro všechna $W$ řeší soustavu rovnic \eqref{final_fin_diff_scheme}.} řešení diferenčního schématu \eqref{final_fin_diff_scheme}.
 
+\medskip
+
 Označíme-li $\hat{\mu}$ výběrovou střední hodnotu náhodné veličiny $Y_{W}$ pro všechna $W$ a $\hat{s}^{2}$ její výběrový rozptyl, potom chybu $\delta$ vypočítané aproximace nalezneme pomocí vzorce, který přímo vyplývá z Čebyševovy nerovnosti:
 
-\begin{equation}
+\begin{equation}\label{eq:error}
 	\delta=\arrowvert EY_{W}-\hat{\mu}\arrowvert=\sqrt{\frac{\hat{s}^{2}}{N\cdot\varepsilon}},
 \end{equation}
 
@@ -191,16 +203,16 @@ kde $N$ je počet simulací v rámci metody Monte Carlo (tzn. $N\equiv$ počet n
 
 \section{Implementace}\label{sec:4}
 
-Součástí této seminární práce je také implementace v programovacím jazyce Matlab, která se skládá z čtyř souborů. Tři z nich obsahují definice funkcí, jež budou popsány podrobněji v následujících podsekcích. V čtvrtém souboru \texttt{main.m} lze nalézt pouze vyvolání řešiče rovnice vedení tepla, který je implementován v \texttt{parabolicPDESolver.m}.
+Součástí této seminární práce je také implementace v programovacím jazyce Matlab, která se skládá ze čtyř souborů. Tři z nich obsahují definice funkcí, jež budou popsány podrobněji v následujících podsekcích. V čtvrtém souboru \texttt{main.m} lze nalézt pouze vyvolání řešiče parabolické parciální diferenciální rovnice, který je implementován v \texttt{parabolicPDESolver.m}.
 
 \subsection{Funkce \texttt{parabolicPDESolver}}\label{sec:4.1}
 
-Tato funkce odpovídá za výpočet aproximace řešení diferenčního schématu \eqref{fin_diff_scheme} podle algoritmu popsaného v sekci~\ref{sec:3}.
+Tato funkce odpovídá za výpočet aproximace řešení diferenčního schématu \eqref{final_fin_diff_scheme} podle algoritmu popsaného v sekci~\ref{sec:3}.
 
 \begin{itemize}
 	\item Vstupní parametry:
 		\begin{itemize}
-			\item \texttt{numOfSim} - číslo simulací v rámci metody Monte Carlo;
+			\item \texttt{numOfSim} - počet simulací v rámci metody Monte Carlo;
 			\item \texttt{b} - číslo $b>0$ určující oblast $\Gamma=(-b,b)\times(-b,b)$;
 			\item \texttt{meshStep} - krok $h$ sítě $\midpoint{\omega}_{h}$;
 			\item \texttt{maxTime} - časová hladina $k_{0}$, pro niž hledáme aproximaci řešení;
@@ -208,14 +220,14 @@ Tato funkce odpovídá za výpočet aproximace řešení diferenčního schémat
 		\end{itemize}
 	\item Výstupní parametry:
 		\begin{itemize}
-			\item \texttt{solution} - hledaná aproximace řešení \eqref{final_fin_diff_scheme};
-			\item \texttt{solutionErr} - chyba aproximace.
+			\item \texttt{solution} - hledaná aproximace řešení schématu \eqref{final_fin_diff_scheme};
+			\item \texttt{solutionErr} - chyba aproximace řešení.
 		\end{itemize}
 \end{itemize}
 
 \subsection{Funkce \texttt{meshRandomWalk}}\label{sec:4.2}
 
-Tato funkce odpovídá za simulaci náhodné procházky na síti $\midpoint{\omega}_{h}$ definované v sekci~\ref{sec:2}.
+Tato funkce odpovídá za simulaci náhodné procházky na síti $\midpoint{\omega}_{h}$.
 
 \begin{itemize}
 	\item Vstupní parametry:
@@ -254,7 +266,7 @@ Tato funkce odpovídá za výpočet statistických vlastností náhodné veliči
 
 \section{Simulace a výsledky}
 
-Pro demonstraci funkčnosti algoritmu uvedeného v sekci \ref{sec:3} a jeho implementace popsané v sekci \ref{sec:4} okrajová a počáteční podmínky úlohy \eqref{ini_problem} byly zvoleny v následujícím tvaru\footnote{Kdyby byla potřeba, v implementačním souboru lze tyto podmínky snadno měnit.}: 
+Pro demonstraci funkčnosti algoritmu uvedeného v sekci \ref{sec:3} a jeho implementace popsané v sekci \ref{sec:4} byla provedena řada simulací. Okrajová a počáteční podmínky úlohy \eqref{ini_problem} byly zvoleny v následujícím tvaru\footnote{Kdyby byla potřeba, v implementačním souboru lze tyto podmínky snadno měnit.}: 
 
 \begin{equation}\label{eq:boundary_condition}
 	u\arrowvert_{\partial\Gamma}=g(x)=273;
@@ -264,13 +276,140 @@ Pro demonstraci funkčnosti algoritmu uvedeného v sekci \ref{sec:3} a jeho impl
 	u(0,x)=h(x)=10x\cdot\exp(-x^2-y^2)+273.
 \end{equation}
 
-Počáteční podmínka \eqref{eq:initial_condition} popisuje rozložení teploty na čtverci $\midpoint{\Gamma}$ v čase $t=0$; toto rozložení je znázorněno na Obr.~\ref{fig:initial_condition}. Čekali bychom, že by časem pozorovaný systém měl prostřednictvím šíření tepla dosáhnout nějaké střední teploty na celém čtverci $\midpoint{\Gamma}$. 
+Počáteční podmínka \eqref{eq:initial_condition} popisuje chování funkce $u=u(t,x)$ na čtverci $\midpoint{\Gamma}$ v čase $t=0$; toto chování je znázorněno na Obr.~\ref{fig:initial_condition} (zvolíme síť $\midpoint{\omega}_{h}$ s krokem $h=0,1$)\footnote{Lze volit i menší hodnoty, což ale způsobí podstatné zvýšení času potřebného na výpočet aproximace řešení na celém čtverci $\midpoint{\Gamma}$.}. Očekávali bychom, že časem pozorovaný systém prostřednictvím šíření tepla (resp. procesu difuze) dosáhne nějaké střední teploty na celém čtverci $\midpoint{\Gamma}$, což můžeme pozorovat na Obr.~\ref{fig:sim100_sol}, \ref{fig:sim1000_sol}, \ref{fig:sim10000_sol}, \ref{fig:sim100000_sol}. Na zmíněných diagramech je zobrazen průběh aproximace řešení původní úlohy ve 3D a ve 2D pro časové hladiny $k_{0}\in\{50,250\}$ a různé počty simulací $N\in\{100,1000,10000,100000\}$. Na Obr.~\ref{fig:sim100_err}, \ref{fig:sim1000_err}, \ref{fig:sim10000_err}, \ref{fig:sim100000_err} lze vidět odpovídající těmto simulacím chyby spočítané pomocí vzorce \eqref{eq:error} na hladině významnosti $5$ $\%$. Zajímavým pozorováním je to, že chyba je maximální ve středu $\midpoint{\Gamma}$, tj. v bodech sítě, ze kterých se náhodné procházky nejméně pravděpodobně dostanou do hranice $\partial\Gamma$.
 
-\begin{figure}
+\medskip
+
+\begin{figure}[ht!]
 \centering
-\includegraphics[width=0.7\linewidth]{../results/initial_condition_plot/initial_condition}
+\includegraphics[width=0.7\linewidth]{../results/initial_condition/initial_condition}
 \caption{Grafické znázornění počáteční podmínky \eqref{eq:initial_condition}.}
 \label{fig:initial_condition}
+\end{figure}
+
+Vzhledem k tomu, že na čtverci $\midpoint{\Gamma}$ pro zvolenou síť bylo spočítáno řadově $10^3$ chyb aproximace řešení, uvedeme v Tab.~\ref{tab:error} pro různé počty simulací $N$ pouze maximální chyby. Lze spekulovat o závislosti velikosti maximální chyby na zvolené časové hladině: je vidět, že pro vetší hladinu chyba je menší. Tohle může být způsobeno tím, že se systém časem stabilizuje a hodnoty skutečného řešení úlohy se přibližují k jisté střední hodnotě (v našem případě je tato hodnota rovna 273).
+
+{\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+\centering
+	\begin{tabular}{ |c||c|c| }
+		\hline
+		Počet simulací, $N$ & Max. chyba, $k_{0}=50$ & Max. chyba, $k_{0}=250$ \\ \hline\hline
+		$10^{\,2}$ & 1.1434 & 0.6963 \\ \hline
+		$10^{\,3}$ & 0.3433 & 0.1830 \\ \hline
+		$10^{\,4}$ & 0.1061 & 0.0560 \\ \hline
+		$10^{\,5}$ & 0.0333 & 0.0176 \\ \hline
+	\end{tabular}
+	\caption{Maximální chyba aproximace řešení diskretizované parabolické evoluční úlohy pro časové hladiny $k_{0}\in\{50,250\}$.}
+	\label{tab:error}
+\end{table}
+
+\section{Závěr}
+
+V této seminární práci bylo ukázáno, že pomocí Metody Monte Carlo lze aproximovat řešení parabolické evoluční úlohy ve 2D. Uvedený postup lze zobecnit do více dimenzí, čímž ale se o hodně zvětší časová náročnost výpočtů. Nicméně, pro aproximaci řešení v nějakém konkrétním zvoleném bodě tento postup je zcela použitelný i ve více dimenzích. 
+
+\newpage{}
+
+%%%%%%%%%%%%% 100
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100/solution_3D/solution_3D_sim100_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100/solution_3D/solution_3D_sim100_step01_time250_boundary2.pdf}}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100/solution_2D/solution_2D_sim100_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/100/solution_2D/solution_2D_sim100_step01_time250_boundary2.pdf}}
+\caption{Aproximace řešení úlohy \eqref{final_fin_diff_scheme} na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$, která byla dosažená při počtu simulací $N=100$ na různých časových hladinách.}
+\label{fig:sim100_sol}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100/solutionErr/solutionError_sim100_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/100/solutionErr/solutionError_sim100_step01_time250_boundary2.pdf}}
+\caption{Grafické znázornění chyby aproximace řešení úlohy \eqref{final_fin_diff_scheme} pro počet simulací $N=100$ na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$ (5\% hladina významnosti).}
+\label{fig:sim100_err}
+\end{figure}
+
+\newpage{}
+
+%%%%%%%%%%%%% 1000
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/1000/solution_3D/solution_3D_sim1000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/1000/solution_3D/solution_3D_sim1000_step01_time250_boundary2.pdf}}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/1000/solution_2D/solution_2D_sim1000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.485\linewidth]{../results/simulations/1000/solution_2D/solution_2D_sim1000_step01_time250_boundary2.pdf}}
+\caption{Aproximace řešení úlohy \eqref{final_fin_diff_scheme} na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$, která byla dosažená při počtu simulací $N=1000$ na různých časových hladinách.}
+\label{fig:sim1000_sol}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/1000/solutionErr/solutionError_sim1000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.485\linewidth]{../results/simulations/1000/solutionErr/solutionError_sim1000_step01_time250_boundary2.pdf}}
+\caption{Grafické znázornění chyby aproximace řešení úlohy \eqref{final_fin_diff_scheme} pro počet simulací $N=1000$ na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$ (5\% hladina významnosti).}
+\label{fig:sim1000_err}
+\end{figure}
+
+\newpage{}
+
+%%%%%%%%%%%%% 10000
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/10000/solution_3D/solution_3D_sim10000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/10000/solution_3D/solution_3D_sim10000_step01_time250_boundary2.pdf}}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/10000/solution_2D/solution_2D_sim10000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/10000/solution_2D/solution_2D_sim10000_step01_time250_boundary2.pdf}}
+\caption{Aproximace řešení úlohy \eqref{final_fin_diff_scheme} na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$, která byla dosažená při počtu simulací $N=10000$ na různých časových hladinách.}
+\label{fig:sim10000_sol}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/10000/solutionErr/solutionError_sim10000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.465\linewidth]{../results/simulations/10000/solutionErr/solutionError_sim10000_step01_time250_boundary2.pdf}}
+\caption{Grafické znázornění chyby aproximace řešení úlohy \eqref{final_fin_diff_scheme} pro počet simulací $N=10000$ na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$ (5\% hladina významnosti).}
+\label{fig:sim10000_err}
+\end{figure}
+
+\newpage{}
+
+%%%%%%%%%%%%% 100000
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solution_3D/solution_3D_sim100000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solution_3D/solution_3D_sim100000_step01_time250_boundary2.pdf}}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solution_2D/solution_2D_sim100000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solution_2D/solution_2D_sim100000_step01_time250_boundary2.pdf}}
+\caption{Aproximace řešení úlohy \eqref{final_fin_diff_scheme} na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$, která byla dosažená při počtu simulací $N=100000$ na různých časových hladinách.}
+\label{fig:sim100000_sol}
+\end{figure}
+
+\begin{figure}[H]
+\subfigure[Časová hladina $k_{0}=50$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solutionErr/solutionError_sim100000_step01_time50_boundary2.pdf}}
+\hfill
+\subfigure[Časová hladina $k_{0}=250$.]{\includegraphics[width=0.4925\linewidth]{../results/simulations/100000/solutionErr/solutionError_sim100000_step01_time250_boundary2.pdf}}
+\caption{Grafické znázornění chyby aproximace řešení úlohy \eqref{final_fin_diff_scheme} pro počet simulací $N=100000$ na čtverci $\midpoint{\Gamma}=[-2,2]\times[-2,2]$ (5\% hladina významnosti).}
+\label{fig:sim100000_err}
 \end{figure}
 
 

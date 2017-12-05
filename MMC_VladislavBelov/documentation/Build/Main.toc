@@ -1,0 +1,10 @@
+\select@language {czech}
+\select@language {czech}
+\contentsline {section}{\numberline {1}\IeC {\'U}vod}{2}
+\contentsline {section}{\numberline {2}Diskretizace \IeC {\'u}lohy}{2}
+\contentsline {section}{\numberline {3}Algoritmus v\IeC {\'y}po\IeC {\v c}tu aproximace}{2}
+\contentsline {section}{\numberline {4}Implementace}{3}
+\contentsline {subsection}{\numberline {4.1}Funkce \texttt {parabolicPDESolver}}{3}
+\contentsline {subsection}{\numberline {4.2}Funkce \texttt {meshRandomWalk}}{4}
+\contentsline {subsection}{\numberline {4.3}Funkce \texttt {calcStats}}{4}
+\contentsline {section}{\numberline {5}Simulace a v\IeC {\'y}sledky}{4}
