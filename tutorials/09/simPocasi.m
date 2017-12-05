@@ -1,16 +1,22 @@
-function prstUsp = simPocasi(P)
+function [prstUsp, casVyvoj] = simPocasi(pocStav, cilenyStav, casHor, P, pocSym)
+% Simulace pocasi jako Markovskeho procesu
+% 
+% INPUT:
+%   P .. matice prechodu
+% OUTPUT:
+%   prstUsp .. pravdepodobnost uspechu
 
-pocSym = 1000;
-pocatek = 4;
-cilenyStav = 2;
-casHor = 3;
+if nargin < 5, pocSym = 1000; end
 
 pocUspechu = 0;
+casVyvoj = nan(pocSym, casHor+1);
 
 for j = 1:pocSym
-    aktStav = pocatek;
+    aktStav = pocStav;
+    casVyvoj(j,1) = aktStav;
     for i = 1:casHor
         aktStav = ctMultinom(1,P(aktStav,:));
+        casVyvoj(j,i+1) = aktStav;
         if aktStav == cilenyStav
             pocUspechu = pocUspechu+1;
          %   disp(['uspech v kroku: ' num2str(j)])

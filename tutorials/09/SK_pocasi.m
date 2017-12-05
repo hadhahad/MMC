@@ -6,15 +6,20 @@ P = [
  0    0    0.4  0.5  0.1; ...
  0.25 0.25 0.25 0.25 0];
 
+% poc = 3;
+% cil = NaN;
+% cas =  100;
+% sim = 10000;
+% [~,vyvoj] = simPocasi(poc,cil,cas,P,sim);
+% budStav = vyvoj(:,end);
+% figure(1)
+% histogram(vysl);
 
-N = 100;
-vysl = nan(N,1);
+cas = 100;
+prst = [0 0 1 0 0]';
+casHor = 20;
+P_n = P^casHor;
 
-for i = 1:N
-    vysl(i) = simPocasi(P);
-end
+prst = P_n*prst;
 
-[prum,~,maxChyba] = ctStats(100*vysl);
-
-disp(['prumer : ' num2str(prum,'%0.2f')])
-disp(['chyba prumeru : ' num2str(maxChyba,'%0.3f')])
+bar((1:5),prst);
