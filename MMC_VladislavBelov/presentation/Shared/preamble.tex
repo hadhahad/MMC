@@ -1,0 +1,63 @@
+\documentclass[11pt]{beamer}
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
+
+%\documentclass[11pt]{beamer}
+
+\usepackage[varg]{txfonts}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%%\usepackage[latin2]{inputenc} % Zapne kodovani cestiny a deleni slov.
+
+\definecolor{beamer@blendedblue}{rgb}{0.5, 0, 0}
+\mode<presentation>
+{
+  \usetheme{Frankfurt}
+  \useoutertheme{infolines}
+  \setbeamercovered{transparent}
+  \setbeamercolor{structure}{fg=beamer@blendedblue}
+}
+\usepackage{alltt}
+%\usepackage{beamerSubfig}
+\usepackage{beamertexpower}
+%\usepackage{ncomment}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage{subfigure}
+\usepackage{array}
+
+\newcommand{\LogoFigs}{../Figs/Logo}
+\newcommand{\Figs}{Figs}
+
+
+\newcommand{\slideCite}[1]{\raisebox{1ex}{\tiny \cite{#1}}}
+\newenvironment{slideFrame}[1]{\begin{frame}\frametitle{#1}}{\end{frame}}
+
+\setbeamertemplate{caption}[numbered] %cislovani obrazku a tabulek
+
+%\author{Vladislav Belov}
+
+\author{Vladislav Belov}
+%\vspace{5pt} Školitel: Ing. Radek Mařík, CSc.}
+\institute[belovvla@fjfi.cvut.cz]{FJFI ČVUT}
+
+
+
+\titlegraphic{\includegraphics[height=1.2cm]{\LogoFigs/CVUTLogoSmall}}
+
+\newenvironment{VerbExample}[1]{\begin{exampleblock}{#1}\semiverbatim}{\endsemiverbatim\end{exampleblock}}
+
+\newcommand{\backupbegin}{
+	\newcounter{framenumberappendix}
+	\setcounter{framenumberappendix}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+	\addtocounter{framenumberappendix}{-\value{framenumber}}
+	\addtocounter{framenumber}{\value{framenumberappendix}} 
+}
+\selectlanguage{czech}
+\date{7. prosince 2017}
